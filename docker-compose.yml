@@ -1,0 +1,47 @@
+# Assuming the all 3 services will be built and run separately by developer
+# Also, expecting future improvements to be updated in the README file
+version: "3"
+services:
+  app:
+    build: app
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+  postgresql:
+    build: 
+      context: ./db-migrations
+      dockerfile: Dockerfile
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "--dbname=editor", "--username=postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - app-network
+
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+    environment:
+      - DB_URL=postgres://postgres:password123@postgresql:5432/readcommend?sslmode=disable
+    depends_on:
+      - postgresql
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+    
