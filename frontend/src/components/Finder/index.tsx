@@ -44,6 +44,8 @@ export function renderTree(data: Array<FileSystemFinder>) {
 		<ul>
 			{sorted.map((node) => (
 				<li key={node.path}>
+					{node.isDirectory && <span>📂</span>}
+					{!node.isDirectory && <span>📄</span>}
 					{node.name}
 					{node.isDirectory && node.children && renderTree(node.children)}
 				</li>
