@@ -1,7 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { createBrowserRouter, RouterProvider } from 'react-router'
 
 import App from './App'
+
+const router = createBrowserRouter([
+	{
+		path: '/',
+		element: <App />,
+	},
+])
 
 const rootEl = document.getElementById('root')
 if (rootEl) {
@@ -9,7 +17,7 @@ if (rootEl) {
 
 	root.render(
 		<React.StrictMode>
-			<App />
+			<RouterProvider router={router} />
 		</React.StrictMode>,
 	)
 }
