@@ -10,11 +10,11 @@ const App = () => {
 	const [value, setValue] = useState('**Hello world!!!**')
 
 	return (
-		<main className="content">
-			<div>
-				<Finder />
-				<section>
-					<MDEditor value={value} onChange={setValue} />
+		<main>
+			<div className="flex">
+				<Finder className="flex-1/6" />
+				<section className="flex-5/6">
+					<MDEditor value={value} onChange={setValue} height="100vh" />
 				</section>
 			</div>
 		</main>

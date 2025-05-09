@@ -1,11 +1,13 @@
+import classNames from 'classnames'
+
 import type { FinderProps } from './types'
 import styles from './styles.module.scss'
 
 export function Finder(props: FinderProps) {
 	return (
-		<section className={styles.finder}>
+		<aside className={classNames(styles.finder, props.className)}>
 			<h2>Here</h2>
-		</section>
+		</aside>
 	)
 }
 
