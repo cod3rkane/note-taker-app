@@ -1,0 +1,13 @@
+@use 'sass:map';
+
+$theme-colors: (
+  "dark-grey": #282c35,
+  "light-grey": #d7d9dd,
+  "white": #fff,
+  "purple": #7c53d5,
+  "blue": #3457df,
+);
+
+@function get_color($color) {
+  @return (map.get($theme-colors, $color))
+}

@@ -1,5 +1,14 @@
-/.cache/
-/dist/
-/node_modules/
-/.DS_Store
-/npm-debug.log
+# Local
+.DS_Store
+*.local
+*.log*
+
+# Dist
+node_modules
+dist/
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+.idea
+.yarn

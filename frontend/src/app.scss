@@ -1,0 +1,14 @@
+@import './styles/utils/variables.scss';
+
+body {
+  background-color: get_color('dark-grey');
+  color: get_color('white');
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
