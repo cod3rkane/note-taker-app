@@ -40,13 +40,16 @@ export function renderTree(data: Array<FileSystemFinder>) {
 		return a.name.localeCompare(b.name)
 	})
 
-	return sorted.map((node) => (
-		<ul key={node.path}>
-			{node.isDirectory && <span>{node.name}</span>}
-			{!node.isDirectory && <li>{node.name}</li>}
-			{node.isDirectory && node.children && renderTree(node.children)}
+	return (
+		<ul>
+			{sorted.map((node) => (
+				<li key={node.path}>
+					{node.name}
+					{node.isDirectory && node.children && renderTree(node.children)}
+				</li>
+			))}
 		</ul>
-	))
+	)
 }
 
 export function Finder(props: FinderProps) {
