@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import MDEditor from '@uiw/react-md-editor'
+import Finder from './components/Finder'
 
 import './app.scss'
 
@@ -9,6 +10,7 @@ const App = () => {
 	return (
 		<main className="content">
 			<div>
+				<Finder />
 				<section>
 					<MDEditor value={value} onChange={setValue} />
 				</section>
