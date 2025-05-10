@@ -1,18 +1,20 @@
-import express from 'express';
-import cors from 'cors';
-import { Server as HttpServer, createServer as createHttpServer } from 'http';
-import startSocketServer from './SocketServer';
+import express from 'express'
+import cors from 'cors'
+import type { Server as HttpServer } from 'node:http'
+import { createServer as createHttpServer } from 'node:http'
 
-const app = express();
+import startSocketServer from './SocketServer'
 
-app.use(cors());
-app.use(express.json());
+const app = express()
 
-let httpServer: HttpServer;
-httpServer = createHttpServer(app);
+app.use(cors())
+app.use(express.json())
 
-startSocketServer(httpServer);
+let httpServer: HttpServer
+httpServer = createHttpServer(app)
+
+startSocketServer(httpServer)
 
 httpServer.listen(3005, () => {
-  console.info(`Listening on 3005`);
-});
+	console.info(`Listening on 3005`)
+})
