@@ -6,7 +6,6 @@ import type { ContextProviderProps } from './types'
 import { WindowEvents } from './types'
 import type { FileSystemFinder } from '../Finder/types'
 
-// @TODO: these namespaces needs to be a type
 const observable = new Observable(WindowEvents.SET_CURRENT_NOTE)
 
 export function ContextProvider(props: ContextProviderProps) {
