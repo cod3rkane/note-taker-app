@@ -11,6 +11,7 @@ const FinderMemo = memo(Finder)
 const EditorMemo = memo(Editor, (prevProps, nextProps) => {
 	/// Here we only need to re-render Editor new a new Note is selected
 	/// Otherwise we simply assume current buffer is always newer one
+	// @TODO: later on we have to update this to take the websocket changes in
 	if (prevProps.note?.path !== nextProps.note?.path) {
 		return false
 	}
