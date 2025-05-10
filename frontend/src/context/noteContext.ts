@@ -16,7 +16,7 @@ export const initialNotes: Array<FileSystemFinder> = [
 		path: '/Notes/first-note.md', // Located inside the "Pictures" folder
 		updatedAt: new Date('2025-09-09T10:30:00Z'), // Last updated time
 		size: 2048, // File size in bytes (example: 2 KB)
-		data: new Blob(),
+		data: new Blob(['**first-note**'], { type: 'text/plain' }),
 	},
 	{
 		name: 'second-note.md',
@@ -24,7 +24,7 @@ export const initialNotes: Array<FileSystemFinder> = [
 		path: '/Notes/second-note.md', // Located inside the "Pictures" folder
 		updatedAt: new Date('2025-09-09T10:30:00Z'), // Last updated time
 		size: 2048, // File size in bytes (example: 2 KB)
-		data: new Blob(),
+		data: new Blob(['**second-note**'], { type: 'text/plain' }),
 	},
 	{
 		name: 'Notes B',
@@ -38,7 +38,7 @@ export const initialNotes: Array<FileSystemFinder> = [
 		path: '/Notes/B/first-note-b.md', // Located inside the "Pictures" folder
 		updatedAt: new Date('2025-09-09T10:30:00Z'), // Last updated time
 		size: 2048, // File size in bytes (example: 2 KB)
-		data: new Blob(),
+		data: new Blob(['**first-note-b**'], { type: 'text/plain' }),
 	},
 	{
 		name: 'Thoughts',
@@ -52,7 +52,7 @@ export const initialNotes: Array<FileSystemFinder> = [
 		path: '/Thoughts/first-thought.md', // Located inside the "Pictures" folder
 		updatedAt: new Date('2025-09-09T10:30:00Z'), // Last updated time
 		size: 2048, // File size in bytes (example: 2 KB)
-		data: new Blob(),
+		data: new Blob(['**first-thought**'], { type: 'text/plain' }),
 	},
 ]
 

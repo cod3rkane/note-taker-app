@@ -6,7 +6,10 @@ import type { ContextProviderProps } from './types'
 import { WindowEvents } from './types'
 import type { FileSystemFinder } from '../Finder/types'
 
-const observable = new Observable(WindowEvents.SET_CURRENT_NOTE)
+const currentNoteObservable = new Observable(WindowEvents.SET_CURRENT_NOTE)
+const updateCurrentNoteObservable = new Observable(
+	WindowEvents.UPDATE_CURRENT_NOTE,
+)
 
 export function ContextProvider(props: ContextProviderProps) {
 	const [state, setState] = useState(initialContext)
@@ -18,11 +21,28 @@ export function ContextProvider(props: ContextProviderProps) {
 				currentNote: note,
 			})
 		}
+		const onUpdateCurrentNote = (text: string) => {
+			// @TODO: just to test the events we're gonna update the currentNote only
+			// @TODO: but once this is validated we can update current note and the Notes array with new data
+			const currentNote = state.currentNote
 
-		observable.subscribe(onSetCurrentNoteEvent)
+			if (currentNote) {
+				setState({
+					...state,
+					currentNote: {
+						...currentNote,
+						data: new Blob([text], { type: 'text/plain' }),
+					},
+				})
+			}
+		}
+
+		currentNoteObservable.subscribe(onSetCurrentNoteEvent)
+		updateCurrentNoteObservable.subscribe(onUpdateCurrentNote)
 
 		return () => {
-			observable.unsubscribe(onSetCurrentNoteEvent)
+			currentNoteObservable.unsubscribe(onSetCurrentNoteEvent)
+			updateCurrentNoteObservable.unsubscribe(onUpdateCurrentNote)
 		}
 	})
 

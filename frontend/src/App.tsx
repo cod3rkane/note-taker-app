@@ -1,24 +1,34 @@
-import { useState, useContext, memo } from 'react'
-import MDEditor from '@uiw/react-md-editor'
+import { useContext, memo } from 'react'
 
 import { NoteContext } from './context/noteContext'
 import Finder from './components/Finder'
+import { Editor } from './components/Editor'
 
 import './app.css'
 import './app.scss'
 
 const FinderMemo = memo(Finder)
+const EditorMemo = memo(Editor, (prevProps, nextProps) => {
+	/// Here we only need to re-render Editor new a new Note is selected
+	/// Otherwise we simply assume current buffer is always newer one
+	if (prevProps.note?.path !== nextProps.note?.path) {
+		return false
+	}
 
-const App = () => {
+	return true
+})
+
+export function App() {
 	const notes = useContext(NoteContext)
-	const [value, setValue] = useState('**Hello world!!!**')
+
+	console.log({ notes })
 
 	return (
 		<main>
 			<div className="flex">
 				<FinderMemo className="flex-1/6" data={notes.notes} />
 				<section className="flex-5/6">
-					<MDEditor value={value} onChange={setValue} height="100vh" />
+					<EditorMemo note={notes.currentNote} />
 				</section>
 			</div>
 		</main>
