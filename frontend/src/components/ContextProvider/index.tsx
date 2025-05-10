@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Observable } from 'windowed-observable'
+import { io } from 'socket.io-client'
 
-import { NoteContext, initialContext } from '../../context/noteContext'
+import {
+	NoteContext,
+	initialContext,
+	initialNotes,
+} from '../../context/noteContext'
 import type { ContextProviderProps } from './types'
 import { WindowEvents } from './types'
 import type { FileSystemFinder } from '../Finder/types'
@@ -11,24 +16,41 @@ const updateCurrentNoteObservable = new Observable(
 	WindowEvents.UPDATE_CURRENT_NOTE,
 )
 
+// @TODO: this comes from .env later on
+const socket = io('ws://localhost:3005')
+
 export function ContextProvider(props: ContextProviderProps) {
-	const [state, setState] = useState(initialContext)
+	const [state, setState] = useState({
+		...initialContext,
+		notes: initialNotes,
+	})
 
 	useEffect(() => {
 		const onSetCurrentNoteEvent = (note: FileSystemFinder) => {
+			const noteIndex = state.notes.findIndex((n) => n.path === note.path)
+			const notes = state.notes
+
 			setState({
 				...state,
-				currentNote: note,
+				currentNote: notes[noteIndex],
 			})
 		}
 		const onUpdateCurrentNote = (text: string) => {
-			// @TODO: just to test the events we're gonna update the currentNote only
-			// @TODO: but once this is validated we can update current note and the Notes array with new data
 			const currentNote = state.currentNote
 
 			if (currentNote) {
+				const noteIndex = state.notes.findIndex(
+					(n) => n.path === currentNote.path,
+				)
+				const notes = state.notes
+
+				if (noteIndex !== -1) {
+					notes[noteIndex] = currentNote
+				}
+
 				setState({
 					...state,
+					notes,
 					currentNote: {
 						...currentNote,
 						data: new Blob([text], { type: 'text/plain' }),
@@ -43,6 +65,7 @@ export function ContextProvider(props: ContextProviderProps) {
 		return () => {
 			currentNoteObservable.unsubscribe(onSetCurrentNoteEvent)
 			updateCurrentNoteObservable.unsubscribe(onUpdateCurrentNote)
+			socket.disconnect()
 		}
 	})
 

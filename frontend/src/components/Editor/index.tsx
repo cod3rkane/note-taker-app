@@ -20,7 +20,7 @@ export function Editor(props: EditorProps) {
 
 	const onUpdate = debounce(() => {
 		observable.publish(text)
-	}, 3000)
+	}, 2000)
 
 	const onChange = (
 		value?: string,

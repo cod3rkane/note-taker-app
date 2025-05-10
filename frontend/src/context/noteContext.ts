@@ -57,7 +57,7 @@ export const initialNotes: Array<FileSystemFinder> = [
 ]
 
 export const initialContext: ContextAPI = {
-	notes: initialNotes,
+	notes: [],
 	currentNote: undefined,
 	isLoading: false,
 }
