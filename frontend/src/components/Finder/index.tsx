@@ -1,4 +1,7 @@
+import { useState } from 'react'
 import classNames from 'classnames'
+
+import FinderItem from '../FinderItem'
 
 import type { FileSystemFinder, FinderProps } from './types'
 import styles from './styles.module.scss'
@@ -44,9 +47,7 @@ export function renderTree(data: Array<FileSystemFinder>) {
 		<ul>
 			{sorted.map((node) => (
 				<li key={node.path}>
-					{node.isDirectory && <span>📂</span>}
-					{!node.isDirectory && <span>📄</span>}
-					{node.name}
+					<FinderItem isFolder={node.isDirectory}>{node.name}</FinderItem>
 					{node.isDirectory && node.children && renderTree(node.children)}
 				</li>
 			))}
@@ -59,7 +60,7 @@ export function Finder(props: FinderProps) {
 
 	return (
 		<aside className={classNames(styles.finder, props.className)}>
-			{renderTree(data)}
+			<div className="p-4">{renderTree(data)}</div>
 		</aside>
 	)
 }

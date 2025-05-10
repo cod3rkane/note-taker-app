@@ -3,9 +3,12 @@
 $theme-colors: (
   "dark-grey": #282c35,
   "light-grey": #d7d9dd,
+  "lighter-grey": #7d7e82,
+  "hover-grey": #40404080,
   "white": #fff,
   "purple": #7c53d5,
   "blue": #3457df,
+  "light-blue": #b9dcf5,
 );
 
 @function get_color($color) {

@@ -1,3 +1,18 @@
+@import '../../styles/utils/variables.scss';
+
 aside.finder {
-  background-color: red;
+  background-color: get_color('dark-grey');
+}
+
+aside.finder div > ul > li > ul {
+  margin-left: 6px;
+  overflow: hidden;
+}
+
+ul.hide {
+  height: 0px;
+}
+
+aside.finder div > ul > li > ul li {
+  margin-left: 6px;
 }

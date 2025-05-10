@@ -1,0 +1,17 @@
+@import '../../styles/utils/variables.scss';
+
+div.finderItem {
+  cursor: pointer;
+  user-select: none;
+  color: get_color('lighter-grey');
+  margin: 2px 0 2px 0;
+  font-size: 12px;
+
+  &:hover {
+    background-color: get_color('hover-grey');
+  }
+}
+
+div.finderItem.hidden + ul {
+  height: 0px;
+}
