@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { Observable } from 'windowed-observable'
 import classNames from 'classnames'
 
 import FinderItem from '../FinderItem'
-
+import { WindowEvents } from '../ContextProvider/types'
 import type { FileSystemFinder, FinderProps } from './types'
 import styles from './styles.module.scss'
 
@@ -35,7 +35,10 @@ export function organizer(data: Array<FileSystemFinder>) {
 	return roots
 }
 
-export function renderTree(data: Array<FileSystemFinder>) {
+export function renderTree(
+	data: Array<FileSystemFinder>,
+	onClickNote: (note: FileSystemFinder) => void,
+) {
 	const sorted = data.sort((a, b) => {
 		if (a.isDirectory && !b.isDirectory) return -1
 		if (!a.isDirectory && b.isDirectory) return -2
@@ -47,20 +50,33 @@ export function renderTree(data: Array<FileSystemFinder>) {
 		<ul>
 			{sorted.map((node) => (
 				<li key={node.path}>
-					<FinderItem isFolder={node.isDirectory}>{node.name}</FinderItem>
-					{node.isDirectory && node.children && renderTree(node.children)}
+					<FinderItem
+						onClickNote={onClickNote}
+						note={node}
+						isFolder={node.isDirectory}
+					>
+						{node.name}
+					</FinderItem>
+					{node.isDirectory &&
+						node.children &&
+						renderTree(node.children, onClickNote)}
 				</li>
 			))}
 		</ul>
 	)
 }
 
+const observable = new Observable(WindowEvents.SET_CURRENT_NOTE)
+
 export function Finder(props: FinderProps) {
 	const data = organizer(props.data)
+	const onClickNotes = (note: FileSystemFinder) => {
+		observable.publish(note)
+	}
 
 	return (
 		<aside className={classNames(styles.finder, props.className)}>
-			<div className="p-4">{renderTree(data)}</div>
+			<div className="p-4">{renderTree(data, onClickNotes)}</div>
 		</aside>
 	)
 }

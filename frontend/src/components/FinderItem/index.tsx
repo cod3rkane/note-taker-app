@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import classNames from 'classnames'
-
 import type { FinderItemProps } from './types'
 import styles from './styles.module.scss'
 
@@ -10,6 +9,8 @@ export function FinderItem(props: FinderItemProps) {
 	const onClick = () => {
 		if (props.isFolder) {
 			setIsHidden(!isHidden)
+		} else {
+			props.onClickNote(props.note)
 		}
 	}
 

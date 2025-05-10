@@ -2120,6 +2120,7 @@ __metadata:
     react-router: "npm:^7.6.0"
     tailwindcss: "npm:^4.1.6"
     typescript: "npm:^5.8.2"
+    windowed-observable: "npm:^1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -2990,6 +2991,13 @@ __metadata:
   version: 2.0.1
   resolution: "web-namespaces@npm:2.0.1"
   checksum: 10c0/df245f466ad83bd5cd80bfffc1674c7f64b7b84d1de0e4d2c0934fb0782e0a599164e7197a4bce310ee3342fd61817b8047ff04f076a1ce12dd470584142a4bd
+  languageName: node
+  linkType: hard
+
+"windowed-observable@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "windowed-observable@npm:1.0.0"
+  checksum: 10c0/64cb09a5878e17b0e59e89879a36180d53e78ca814752e4b9c603e821e9be7fdc1f838a928490c2b5108eb44b3e8ad9aaab63e6147e46b9d3dcce06eb16be56b
   languageName: node
   linkType: hard
 
