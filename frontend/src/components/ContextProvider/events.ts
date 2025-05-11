@@ -179,12 +179,39 @@ export function finderDelete(
 	}
 }
 
+export function finderRename(
+	state: ContextAPI,
+	setState: Dispatch<SetStateAction<ContextAPI>>,
+	payload: FileSystemFinder,
+) {
+	const directory = getDirectory(payload)
+	const notes = Array.from(state.notes)
+	const noteIndex = notes.findIndex((n) => n.path === payload.path)
+
+	if (noteIndex !== -1) {
+		const note = notes[noteIndex]
+
+		notes[noteIndex] = {
+			...note,
+			name: payload.name,
+			path: `${directory}/${payload.name}`,
+		}
+
+		setState({
+			...state,
+			notes,
+		})
+	}
+}
+
 export function finderObservableEventsHandler(
 	state: ContextAPI,
 	setState: Dispatch<SetStateAction<ContextAPI>>,
 ) {
 	return ({ event, payload }: FinderEvent) => {
 		switch (event) {
+			case FinderEvents.RENAME:
+				return finderRename(state, setState, payload)
 			case FinderEvents.NEW_FILE:
 				return finderNewFile(state, setState, payload)
 			case FinderEvents.NEW_FOLDER:

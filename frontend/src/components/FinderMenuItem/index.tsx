@@ -27,11 +27,20 @@ export function FinderMenuItem(props: FinderMenuItemProps) {
 			props.onClick?.()
 		}
 	}
+	const onClickRename = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+		e.stopPropagation()
+		e.preventDefault()
+
+		props.onRenameEvent?.()
+		props.onClick?.()
+	}
 
 	return (
 		<nav className={classNames(styles.FinderMenuItem, 'rounded-b-sm')}>
 			<ul className="p-0.5">
-				<li>Rename</li>
+				<li onClick={onClickRename} onKeyDown={() => null}>
+					Rename
+				</li>
 				<li
 					onClick={onClickEvent(FinderEvents.NEW_FILE)}
 					onKeyDown={() => null}

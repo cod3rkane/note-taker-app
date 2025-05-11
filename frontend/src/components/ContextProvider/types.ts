@@ -30,6 +30,7 @@ export const FinderEvents = {
 	NEW_FILE: 'NEW_FILE',
 	NEW_FOLDER: 'NEW_FOLDER',
 	DELETE: 'DELETE',
+	RENAME: 'RENAME',
 } as const
 
 export type FinderEvent = {

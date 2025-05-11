@@ -1,11 +1,27 @@
-import { useRef, useEffect, useState, cloneElement } from 'react'
+import {
+	useRef,
+	useEffect,
+	useState,
+	cloneElement,
+	type FocusEvent,
+	type MouseEvent as ReactMouseEvent,
+} from 'react'
 import classNames from 'classnames'
 import type { FinderItemProps } from './types'
 import styles from './styles.module.scss'
+import { Observable } from 'windowed-observable'
+import {
+	type FinderEvent,
+	FinderEvents,
+	WindowEvents,
+} from '../ContextProvider/types'
+
+const finderObservable = new Observable(WindowEvents.FINDER_EVENTS)
 
 export function FinderItem(props: FinderItemProps) {
 	const [isHidden, setIsHidden] = useState(false)
 	const [isShowingMenu, setIsShowingMenu] = useState(false)
+	const [isEditing, setIsEditing] = useState(false)
 	const ref = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
@@ -37,7 +53,7 @@ export function FinderItem(props: FinderItemProps) {
 			props.onClickNote(props.note)
 		}
 	}
-	const onMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+	const onMouseDown = (event: ReactMouseEvent<HTMLDivElement, MouseEvent>) => {
 		if (event.button === 0) return
 
 		if (event.button === 2) {
@@ -49,7 +65,32 @@ export function FinderItem(props: FinderItemProps) {
 
 	const menu = cloneElement(props.menu, {
 		onClick: () => setIsShowingMenu(false),
+		onRenameEvent: () => setIsEditing(true),
 	})
+
+	const onNameChangeBlur = (e: FocusEvent<HTMLInputElement>) => {
+		e.preventDefault()
+		e.stopPropagation()
+
+		setIsEditing(false)
+		let name = e.target.value
+
+		if (!props.note.isDirectory) {
+			if (!name.endsWith('.md')) {
+				name = `${name}.md`
+			}
+		}
+
+		const eventData: FinderEvent = {
+			event: FinderEvents.RENAME,
+			payload: {
+				...props.note,
+				name,
+			},
+		}
+
+		finderObservable.publish(eventData)
+	}
 
 	return (
 		<div
@@ -62,7 +103,18 @@ export function FinderItem(props: FinderItemProps) {
 			onMouseDown={onMouseDown}
 		>
 			<span>{icon}</span>
-			{props.children}
+			{isEditing && (
+				<input
+					type="text"
+					onBlur={onNameChangeBlur}
+					defaultValue={props.note.name}
+					onClick={(e) => {
+						e.stopPropagation()
+						e.preventDefault()
+					}}
+				/>
+			)}
+			{!isEditing && props.children}
 			{isShowingMenu && menu}
 		</div>
 	)
