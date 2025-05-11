@@ -12,14 +12,14 @@ export function FinderMenuItem(props: FinderMenuItemProps) {
 		e.stopPropagation()
 		e.preventDefault()
 
-		console.log({ e })
-
 		const event: FinderEvents = {
 			event: FinderEvents.NEW_FILE,
 			payload: props.finder,
 		}
 
 		finderObservable.publish(event)
+
+		props.onClick?.()
 	}
 
 	return (

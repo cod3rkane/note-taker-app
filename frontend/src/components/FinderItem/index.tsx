@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState, cloneElement } from 'react'
 import classNames from 'classnames'
 import type { FinderItemProps } from './types'
 import styles from './styles.module.scss'
@@ -47,6 +47,10 @@ export function FinderItem(props: FinderItemProps) {
 		}
 	}
 
+	const menu = cloneElement(props.menu, {
+		onClick: () => setIsShowingMenu(false),
+	})
+
 	return (
 		<div
 			ref={ref}
@@ -59,7 +63,7 @@ export function FinderItem(props: FinderItemProps) {
 		>
 			<span>{icon}</span>
 			{props.children}
-			{isShowingMenu && props.menu}
+			{isShowingMenu && menu}
 		</div>
 	)
 }
