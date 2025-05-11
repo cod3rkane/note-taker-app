@@ -32,7 +32,7 @@ export const FinderEvents = {
 	DELETE: 'DELETE',
 } as const
 
-export type FinderEvents = {
+export type FinderEvent = {
 	event: keyof typeof FinderEvents
 	payload: FileSystemFinder
 }

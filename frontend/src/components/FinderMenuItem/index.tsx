@@ -3,62 +3,48 @@ import { Observable } from 'windowed-observable'
 
 import styles from './styles.module.scss'
 import type { FinderMenuItemProps } from './types'
-import { FinderEvents, WindowEvents } from '../ContextProvider/types'
+import {
+	type FinderEvent,
+	WindowEvents,
+	FinderEvents,
+} from '../ContextProvider/types'
 
 const finderObservable = new Observable(WindowEvents.FINDER_EVENTS)
 
 export function FinderMenuItem(props: FinderMenuItemProps) {
-	const onClickNewFile = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
-		e.stopPropagation()
-		e.preventDefault()
+	const onClickEvent = (event: keyof typeof FinderEvents) => {
+		return (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+			e.stopPropagation()
+			e.preventDefault()
 
-		const event: FinderEvents = {
-			event: FinderEvents.NEW_FILE,
-			payload: props.finder,
+			const eventData: FinderEvent = {
+				event,
+				payload: props.finder,
+			}
+
+			finderObservable.publish(eventData)
+
+			props.onClick?.()
 		}
-
-		finderObservable.publish(event)
-
-		props.onClick?.()
-	}
-	const onClickNewFolder = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
-		e.stopPropagation()
-		e.preventDefault()
-
-		const event: FinderEvents = {
-			event: FinderEvents.NEW_FOLDER,
-			payload: props.finder,
-		}
-
-		finderObservable.publish(event)
-
-		props.onClick?.()
-	}
-	const onClickDelete = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
-		e.stopPropagation()
-		e.preventDefault()
-
-		const event: FinderEvents = {
-			event: FinderEvents.DELETE,
-			payload: props.finder,
-		}
-
-		finderObservable.publish(event)
-
-		props.onClick?.()
 	}
 
 	return (
 		<nav className={classNames(styles.FinderMenuItem, 'rounded-b-sm')}>
 			<ul className="p-0.5">
 				<li>Rename</li>
-				<li onClick={onClickNewFile} onKeyDown={() => null}>
+				<li
+					onClick={onClickEvent(FinderEvents.NEW_FILE)}
+					onKeyDown={() => null}
+				>
 					New File
 				</li>
-				<li onClick={onClickNewFolder} onKeyDown={() => null}>
+				<li
+					onClick={onClickEvent(FinderEvents.NEW_FOLDER)}
+					onKeyDown={() => null}
+				>
 					New Folder
 				</li>
-				<li onClick={onClickDelete} onKeyDown={() => null}>
+				<li onClick={onClickEvent(FinderEvents.DELETE)} onKeyDown={() => null}>
 					Delete
 				</li>
 			</ul>

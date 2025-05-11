@@ -4,6 +4,7 @@ import type { Socket } from 'socket.io-client'
 import type { ContextAPI } from '../../context/types'
 import type { FileSystemFinder } from '../Finder/types'
 import {
+	type FinderEvent,
 	FinderEvents,
 	WebsocketEvents,
 	type WebsocketObservableEvents,
@@ -182,7 +183,7 @@ export function finderObservableEventsHandler(
 	state: ContextAPI,
 	setState: Dispatch<SetStateAction<ContextAPI>>,
 ) {
-	return ({ event, payload }: FinderEvents) => {
+	return ({ event, payload }: FinderEvent) => {
 		switch (event) {
 			case FinderEvents.NEW_FILE:
 				return finderNewFile(state, setState, payload)
