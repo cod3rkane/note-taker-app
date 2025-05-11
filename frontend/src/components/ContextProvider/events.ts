@@ -157,6 +157,27 @@ export function finderNewFolder(
 	})
 }
 
+export function finderDelete(
+	state: ContextAPI,
+	setState: Dispatch<SetStateAction<ContextAPI>>,
+	payload: FileSystemFinder,
+) {
+	const directory = getDirectory(payload)
+	const notes = Array.from(state.notes)
+
+	if (payload.isDirectory) {
+		setState({
+			...state,
+			notes: notes.filter((n) => !n.path.startsWith(directory)),
+		})
+	} else {
+		setState({
+			...state,
+			notes: notes.filter((n) => n.path !== payload.path),
+		})
+	}
+}
+
 export function finderObservableEventsHandler(
 	state: ContextAPI,
 	setState: Dispatch<SetStateAction<ContextAPI>>,
@@ -168,7 +189,7 @@ export function finderObservableEventsHandler(
 			case FinderEvents.NEW_FOLDER:
 				return finderNewFolder(state, setState, payload)
 			case FinderEvents.DELETE:
-				break
+				return finderDelete(state, setState, payload)
 		}
 	}
 }
