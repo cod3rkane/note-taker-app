@@ -126,6 +126,37 @@ export function finderNewFile(
 	})
 }
 
+export function finderNewFolder(
+	state: ContextAPI,
+	setState: Dispatch<SetStateAction<ContextAPI>>,
+	payload: FileSystemFinder,
+) {
+	const defaultName = 'new folder'
+	const directory = getDirectory(payload)
+	const hasNewFolder = state.notes.filter((n: FileSystemFinder) => {
+		return n.path.startsWith(`${directory}/${defaultName}`)
+	})
+
+	const name =
+		hasNewFolder.length > 0
+			? `${defaultName}${hasNewFolder.length}`
+			: `${defaultName}`
+	const path = `${directory}/${name}`
+	const notes = Array.from(state.notes)
+
+	notes.push({
+		name,
+		isDirectory: true,
+		path,
+		updatedAt: new Date(),
+	})
+
+	setState({
+		...state,
+		notes,
+	})
+}
+
 export function finderObservableEventsHandler(
 	state: ContextAPI,
 	setState: Dispatch<SetStateAction<ContextAPI>>,
@@ -135,7 +166,7 @@ export function finderObservableEventsHandler(
 			case FinderEvents.NEW_FILE:
 				return finderNewFile(state, setState, payload)
 			case FinderEvents.NEW_FOLDER:
-				break
+				return finderNewFolder(state, setState, payload)
 			case FinderEvents.DELETE:
 				break
 		}

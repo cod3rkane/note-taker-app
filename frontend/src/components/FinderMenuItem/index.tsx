@@ -21,6 +21,19 @@ export function FinderMenuItem(props: FinderMenuItemProps) {
 
 		props.onClick?.()
 	}
+	const onClickNewFolder = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+		e.stopPropagation()
+		e.preventDefault()
+
+		const event: FinderEvents = {
+			event: FinderEvents.NEW_FOLDER,
+			payload: props.finder,
+		}
+
+		finderObservable.publish(event)
+
+		props.onClick?.()
+	}
 
 	return (
 		<nav className={classNames(styles.FinderMenuItem, 'rounded-b-sm')}>
@@ -29,7 +42,9 @@ export function FinderMenuItem(props: FinderMenuItemProps) {
 				<li onClick={onClickNewFile} onKeyDown={() => null}>
 					New File
 				</li>
-				<li>New Folder</li>
+				<li onClick={onClickNewFolder} onKeyDown={() => null}>
+					New Folder
+				</li>
 				<li>Delete</li>
 			</ul>
 		</nav>
