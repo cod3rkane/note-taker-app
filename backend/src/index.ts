@@ -10,8 +10,7 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-let httpServer: HttpServer
-httpServer = createHttpServer(app)
+const httpServer: HttpServer = createHttpServer(app)
 
 startSocketServer(httpServer)
 
