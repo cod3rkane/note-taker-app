@@ -5,6 +5,7 @@ import styles from './styles.module.scss'
 
 export function FinderItem(props: FinderItemProps) {
 	const [isHidden, setIsHidden] = useState(false)
+	const [isShowingMenu, setIsShowingMenu] = useState(false)
 	const ref = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
@@ -14,6 +15,10 @@ export function FinderItem(props: FinderItemProps) {
 				['ASIDE', 'aside'].includes((event.target as HTMLDivElement)?.nodeName)
 			) {
 				event.preventDefault()
+			}
+
+			if (event.target !== ref.current) {
+				setIsShowingMenu(false)
 			}
 		}
 
@@ -32,6 +37,13 @@ export function FinderItem(props: FinderItemProps) {
 			props.onClickNote(props.note)
 		}
 	}
+	const onMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+		if (event.button === 2) {
+			setIsShowingMenu(!isShowingMenu)
+		} else {
+			setIsShowingMenu(false)
+		}
+	}
 
 	return (
 		<div
@@ -41,9 +53,11 @@ export function FinderItem(props: FinderItemProps) {
 			})}
 			onClick={onClick}
 			onKeyDown={() => null}
+			onMouseDown={onMouseDown}
 		>
 			<span>{icon}</span>
 			{props.children}
+			{isShowingMenu && props.menu}
 		</div>
 	)
 }

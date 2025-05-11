@@ -1,0 +1,20 @@
+@import '../../styles/utils/variables.scss';
+
+
+nav.FinderMenuItem {
+  background-color: get_color('lighter-blue');
+  color: get_color('light-grey');
+
+  & > ul {
+    padding: 2px 0 8px;
+
+    & > li {
+      margin: 4px 0 4px 0 !important;
+      padding-left: 8px;
+  
+      &:hover {
+        background-color: get_color('dark-grey');
+      }
+    }
+  }
+}

@@ -2,6 +2,7 @@ import { Observable } from 'windowed-observable'
 import classNames from 'classnames'
 
 import FinderItem from '../FinderItem'
+import { FinderMenuItem } from '../FinderMenuItem'
 import { WindowEvents } from '../ContextProvider/types'
 import type { FileSystemFinder, FinderProps } from './types'
 import styles from './styles.module.scss'
@@ -51,6 +52,7 @@ export function renderTree(
 			{sorted.map((node) => (
 				<li key={node.path}>
 					<FinderItem
+						menu={<FinderMenuItem finder={node} />}
 						onClickNote={onClickNote}
 						note={node}
 						isFolder={node.isDirectory}
