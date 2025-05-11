@@ -100,11 +100,8 @@ export function finderNewFile(
 	const defaultName = 'new note'
 	const directory = getDirectory(payload)
 	const hasNewNote = state.notes.filter((n: FileSystemFinder) => {
-		return n.path.startsWith(`${directory}/${defaultName}.md`)
+		return n.path.startsWith(`${directory}/${defaultName}`)
 	})
-
-	console.log({ payload })
-	console.log({ directory, hasNewNote })
 
 	const name =
 		hasNewNote.length > 0
@@ -114,8 +111,6 @@ export function finderNewFile(
 	const data = new Blob([`**${name}**`], { type: 'text/plain' })
 	const notes = Array.from(state.notes)
 
-	console.log({ name, path, data, notes })
-
 	notes.push({
 		name,
 		isDirectory: false, // File
@@ -124,8 +119,6 @@ export function finderNewFile(
 		size: data.size,
 		data,
 	})
-
-	console.log('here cod3rkane', { notes })
 
 	setState({
 		...state,
