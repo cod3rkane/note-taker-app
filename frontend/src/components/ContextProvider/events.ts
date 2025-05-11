@@ -3,8 +3,13 @@ import type { Socket } from 'socket.io-client'
 
 import type { ContextAPI } from '../../context/types'
 import type { FileSystemFinder } from '../Finder/types'
-import { WebsocketEvents, type WebsocketObservableEvents } from './types'
+import {
+	FinderEvents,
+	WebsocketEvents,
+	type WebsocketObservableEvents,
+} from './types'
 import { debounce } from '../../utils/debounce'
+import { getDirectory } from '../../utils'
 
 export function emitJoinRoom(socket: Socket, state: ContextAPI) {
 	return () => {
@@ -87,6 +92,58 @@ export function websocketObservableEventsHandler(
 	}
 }
 
+export function finderNewFile(
+	state: ContextAPI,
+	setState: Dispatch<SetStateAction<ContextAPI>>,
+	payload: FileSystemFinder,
+) {
+	const defaultName = 'new note'
+	const directory = getDirectory(payload)
+	const hasNewNote = state.notes.filter((n: FileSystemFinder) => {
+		return n.path.startsWith(`${directory}/${defaultName}.md`)
+	})
+
+	const name =
+		hasNewNote.length > 0
+			? `${defaultName}${hasNewNote.length}.md`
+			: `${defaultName}.md`
+	const path = `${directory}/${name}`
+	const data = new Blob([`**${name}**`], { type: 'text/plain' })
+	const notes = Array.from(state.notes)
+
+	notes.push({
+		name,
+		isDirectory: false, // File
+		path,
+		updatedAt: new Date(),
+		size: data.size,
+		data,
+	})
+
+	console.log('here cod3rkane', { notes })
+
+	setState({
+		...state,
+		notes,
+	})
+}
+
+export function finderObservableEventsHandler(
+	state: ContextAPI,
+	setState: Dispatch<SetStateAction<ContextAPI>>,
+) {
+	return ({ event, payload }: FinderEvents) => {
+		switch (event) {
+			case FinderEvents.NEW_FILE:
+				return finderNewFile(state, setState, payload)
+			case FinderEvents.NEW_FOLDER:
+				break
+			case FinderEvents.DELETE:
+				break
+		}
+	}
+}
+
 export default {
 	onRequestNote,
 	onSyncNote,
@@ -95,4 +152,6 @@ export default {
 	emitUpdateNote,
 	emitJoinRoom,
 	websocketObservableEventsHandler,
+	finderNewFile,
+	finderObservableEventsHandler,
 }

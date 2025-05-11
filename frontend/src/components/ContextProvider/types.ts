@@ -1,3 +1,5 @@
+import type { FileSystemFinder } from '../Finder/types'
+
 export type ContextProviderProps = Readonly<{
 	children: React.ReactNode
 }>
@@ -6,6 +8,7 @@ export const WindowEvents = {
 	SET_CURRENT_NOTE: 'SET_CURRENT_NOTE',
 	UPDATE_CURRENT_NOTE: 'UPDATE_CURRENT_NOTE',
 	WEBSOCKET_EVENTS: 'WEBSOCKET_EVENTS',
+	FINDER_EVENTS: 'FINDER_EVENTS',
 } as const
 
 export const WebsocketEvents = {
@@ -21,4 +24,15 @@ export type WebsocketObservableEvents = {
 	event: keyof typeof WebsocketEvents
 	/// @TODO: for now any
 	payload: any
+}
+
+export const FinderEvents = {
+	NEW_FILE: 'NEW_FILE',
+	NEW_FOLDER: 'NEW_FOLDER',
+	DELETE: 'DELETE',
+} as const
+
+export type FinderEvents = {
+	event: keyof typeof FinderEvents
+	payload: FileSystemFinder
 }

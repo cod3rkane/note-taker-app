@@ -38,6 +38,8 @@ export function FinderItem(props: FinderItemProps) {
 		}
 	}
 	const onMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+		if (event.button === 0) return
+
 		if (event.button === 2) {
 			setIsShowingMenu(!isShowingMenu)
 		} else {

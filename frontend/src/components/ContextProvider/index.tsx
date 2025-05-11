@@ -15,6 +15,7 @@ import type { FileSystemFinder } from '../Finder/types'
 import Events from './events'
 
 const currentNoteObservable = new Observable(WindowEvents.SET_CURRENT_NOTE)
+const finderObservable = new Observable(WindowEvents.FINDER_EVENTS)
 const websocketObservable = new Observable(WindowEvents.WEBSOCKET_EVENTS)
 
 // @TODO: this comes from .env later on
@@ -77,6 +78,9 @@ export function ContextProvider(props: ContextProviderProps) {
 		websocketObservable.subscribe(
 			Events.websocketObservableEventsHandler(socket, state),
 		)
+		finderObservable.subscribe(
+			Events.finderObservableEventsHandler(state, setState),
+		)
 
 		// Websocket Events
 		socket.on(
@@ -91,6 +95,9 @@ export function ContextProvider(props: ContextProviderProps) {
 		return () => {
 			/// Window Events
 			currentNoteObservable.unsubscribe(onSetCurrentNoteEvent)
+			// finderObservable.unsubscribe(
+			// 	Events.finderObservableEventsHandler(state, setState),
+			// )
 			websocketObservable.unsubscribe(
 				Events.websocketObservableEventsHandler(socket, state),
 			)
