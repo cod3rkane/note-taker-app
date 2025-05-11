@@ -7,8 +7,13 @@ import { ContextProvider } from './components/ContextProvider'
 
 const router = createBrowserRouter([
 	{
-		path: '/',
-		element: <App />,
+		path: '/:roomID?',
+		index: true,
+		element: (
+			<ContextProvider>
+				<App />
+			</ContextProvider>
+		),
 	},
 ])
 
@@ -18,9 +23,7 @@ if (rootEl) {
 
 	root.render(
 		<React.StrictMode>
-			<ContextProvider>
-				<RouterProvider router={router} />
-			</ContextProvider>
+			<RouterProvider router={router} />
 		</React.StrictMode>,
 	)
 }
