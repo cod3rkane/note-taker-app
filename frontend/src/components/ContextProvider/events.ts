@@ -103,6 +103,9 @@ export function finderNewFile(
 		return n.path.startsWith(`${directory}/${defaultName}.md`)
 	})
 
+	console.log({ payload })
+	console.log({ directory, hasNewNote })
+
 	const name =
 		hasNewNote.length > 0
 			? `${defaultName}${hasNewNote.length}.md`
@@ -110,6 +113,8 @@ export function finderNewFile(
 	const path = `${directory}/${name}`
 	const data = new Blob([`**${name}**`], { type: 'text/plain' })
 	const notes = Array.from(state.notes)
+
+	console.log({ name, path, data, notes })
 
 	notes.push({
 		name,

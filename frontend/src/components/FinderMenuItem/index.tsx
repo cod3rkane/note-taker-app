@@ -12,6 +12,8 @@ export function FinderMenuItem(props: FinderMenuItemProps) {
 		e.stopPropagation()
 		e.preventDefault()
 
+		console.log({ e })
+
 		const event: FinderEvents = {
 			event: FinderEvents.NEW_FILE,
 			payload: props.finder,
@@ -23,12 +25,12 @@ export function FinderMenuItem(props: FinderMenuItemProps) {
 	return (
 		<nav className={classNames(styles.FinderMenuItem, 'rounded-b-sm')}>
 			<ul className="p-0.5">
-				<li onClick={console.log}>Rename</li>
+				<li>Rename</li>
 				<li onClick={onClickNewFile} onKeyDown={() => null}>
 					New File
 				</li>
-				<li onClick={console.log}>New Folder</li>
-				<li onClick={console.log}>Delete</li>
+				<li>New Folder</li>
+				<li>Delete</li>
 			</ul>
 		</nav>
 	)
