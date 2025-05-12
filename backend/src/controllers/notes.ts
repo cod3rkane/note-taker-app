@@ -1,5 +1,6 @@
 import type { filesystem } from '../../generated/prisma'
 import { FileSystem } from '../services/filesystem'
+import type { FileSystemFinder } from '../types'
 
 export class NotesController {
 	private filesystem: FileSystem
@@ -14,16 +15,43 @@ export class NotesController {
 		return notes
 	}
 
-	public async createNote(file: Omit<filesystem, 'id'>) {
-		const result = await this.filesystem.createFilesystem(file)
+	public async createNote(file: FileSystemFinder) {
+		const data = new Blob(file.data ? [file.data] : ['**default-note**'], {
+			type: 'text/plain',
+		})
+
+		const result = await this.filesystem.createFilesystem({
+			name: file.name,
+			is_directory: Boolean(file.isDirectory),
+			path: file.path,
+			updated_at: new Date(),
+			size: data.size,
+			data: await data.bytes(),
+		})
 
 		return result
 	}
 
-	public async updateNote(file: filesystem) {
-		const result = await this.filesystem.updateFileSystem(file)
+	public async updateNote(file: FileSystemFinder) {
+		const data = new Blob(file.data ? [file.data] : ['**default-note**'], {
+			type: 'text/plain',
+		})
 
-		return result
+		if (file.id) {
+			const result = await this.filesystem.updateFileSystem({
+				id: file.id,
+				name: file.name,
+				is_directory: Boolean(file.isDirectory),
+				path: file.path,
+				updated_at: new Date(),
+				size: data.size,
+				data: await data.bytes(),
+			})
+
+			return result
+		}
+
+		throw new Error('ID is required')
 	}
 
 	public async deleteNote(id: number) {

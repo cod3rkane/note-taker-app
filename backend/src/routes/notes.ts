@@ -1,6 +1,7 @@
 import type { Express, Request, Response } from 'express'
 
 import { NotesController } from '../controllers/notes'
+import type { FileSystemFinder } from '../types'
 
 export class NotesRoute {
 	private app: Express
@@ -17,11 +18,29 @@ export class NotesRoute {
 		res.json(notes)
 	}
 
-	private async remove(req: Request, res: Response) {}
+	private async remove(req: Request, res: Response) {
+		const body: { id: number } = req.body
 
-	private async create(req: Request, res: Response) {}
+		const result = await this.controller.deleteNote(body.id)
 
-	private async update(req: Request, res: Response) {}
+		res.json(result)
+	}
+
+	private async create(req: Request, res: Response) {
+		const file: FileSystemFinder = req.body
+
+		const result = await this.controller.createNote(file)
+
+		res.json(result)
+	}
+
+	private async update(req: Request, res: Response) {
+		const file: FileSystemFinder = req.body
+
+		const result = await this.controller.updateNote(file)
+
+		res.json(result)
+	}
 
 	public init() {
 		this.app.get('/notes', this.get.bind(this))

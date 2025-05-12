@@ -16,18 +16,14 @@ export class FileSystem {
 	}
 
 	public async createFilesystem(file: Omit<filesystem, 'id'>) {
-		const data = new Blob(file.data ? [file.data] : ['**default-note**'], {
-			type: 'text/plain',
-		})
-
 		const res = await this.db.filesystem.create({
 			data: {
 				name: file.name,
 				is_directory: file.is_directory,
 				path: file.path,
-				updated_at: new Date(),
-				size: data.size,
-				data: await data.bytes(),
+				updated_at: file.updated_at,
+				size: file.size,
+				data: file.data,
 			},
 		})
 
