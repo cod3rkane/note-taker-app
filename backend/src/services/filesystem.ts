@@ -42,6 +42,7 @@ export class FileSystem {
 	}
 
 	public async deleteFileSystem(id: number) {
+		// @TODO: if is a directory remove all files
 		const result = await this.db.filesystem.delete({
 			where: { id },
 		})

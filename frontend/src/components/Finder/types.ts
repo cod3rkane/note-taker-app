@@ -1,6 +1,7 @@
 import type { HTMLAttributes } from 'react'
 
 export type FileSystemFinder = {
+	id: number
 	name: string
 	isDirectory?: boolean
 	path: string

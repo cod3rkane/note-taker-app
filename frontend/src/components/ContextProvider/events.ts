@@ -11,6 +11,7 @@ import {
 } from './types'
 import { debounce } from '../../utils/debounce'
 import { getDirectory } from '../../utils'
+import API from '../../api'
 
 export function emitJoinRoom(socket: Socket, state: ContextAPI) {
 	return () => {
@@ -113,6 +114,7 @@ export function finderNewFile(
 	const notes = Array.from(state.notes)
 
 	notes.push({
+		id: payload.id,
 		name,
 		isDirectory: false, // File
 		path,
@@ -146,6 +148,7 @@ export function finderNewFolder(
 	const notes = Array.from(state.notes)
 
 	notes.push({
+		id: payload.id,
 		name,
 		isDirectory: true,
 		path,
@@ -177,6 +180,8 @@ export function finderDelete(
 			notes: notes.filter((n) => n.path !== payload.path),
 		})
 	}
+
+	API.removeNote(payload.id)
 }
 
 export function finderRename(
@@ -208,7 +213,7 @@ export function finderObservableEventsHandler(
 	state: ContextAPI,
 	setState: Dispatch<SetStateAction<ContextAPI>>,
 ) {
-	return ({ event, payload }: FinderEvent) => {
+	return debounce(({ event, payload }: FinderEvent) => {
 		switch (event) {
 			case FinderEvents.RENAME:
 				return finderRename(state, setState, payload)
@@ -219,7 +224,7 @@ export function finderObservableEventsHandler(
 			case FinderEvents.DELETE:
 				return finderDelete(state, setState, payload)
 		}
-	}
+	}, 100)
 }
 
 export default {

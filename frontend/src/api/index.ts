@@ -8,7 +8,22 @@ export async function getNotes() {
 		},
 	})
 }
+/** Delete Note */
+export async function removeNote(id: number) {
+	// @TODO: URL comes from .env later on
+	return fetch('http://localhost:3005/notes', {
+		method: 'DELETE',
+		body: JSON.stringify({
+			id,
+		}),
+		headers: {
+			'Content-Type': 'application/json',
+			// @TODO: Authentication?
+		},
+	})
+}
 
 export default {
 	getNotes,
+	removeNote,
 }

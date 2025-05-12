@@ -3,11 +3,7 @@ import { Observable } from 'windowed-observable'
 import { io } from 'socket.io-client'
 import { useParams } from 'react-router'
 
-import {
-	NoteContext,
-	initialContext,
-	initialNotes,
-} from '../../context/noteContext'
+import { NoteContext, initialContext } from '../../context/noteContext'
 import type { ContextAPI } from '../../context/types'
 import type { ContextProviderProps } from './types'
 import { WebsocketEvents, WindowEvents } from './types'

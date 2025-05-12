@@ -21,17 +21,25 @@ export class NotesRoute {
 	private async remove(req: Request, res: Response) {
 		const body: { id: number } = req.body
 
-		const result = await this.controller.deleteNote(body.id)
+		try {
+			const result = await this.controller.deleteNote(body.id)
 
-		res.json(result)
+			res.json(result)
+		} catch (err) {
+			res.json({})
+		}
 	}
 
 	private async create(req: Request, res: Response) {
 		const file: FileSystemFinder & { data: Uint8Array } = req.body
 
-		const result = await this.controller.createNote(file)
+		try {
+			const result = await this.controller.createNote(file)
 
-		res.json(result)
+			res.json(result)
+		} catch (err) {
+			res.json({})
+		}
 	}
 
 	private async update(req: Request, res: Response) {
