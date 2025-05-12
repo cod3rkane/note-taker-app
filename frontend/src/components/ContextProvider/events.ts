@@ -143,15 +143,17 @@ export function finderNewFile(
 
 				const noteIndex = notes.findIndex((n) => n.path === note.path)
 
-				notes[noteIndex] = {
-					...note,
-					data: blob,
-				}
+				if (noteIndex !== -1) {
+					notes[noteIndex] = {
+						...note,
+						data: blob,
+					}
 
-				setState({
-					...state,
-					notes,
-				})
+					setState({
+						...state,
+						notes,
+					})
+				}
 			}
 		})
 }
@@ -195,14 +197,16 @@ export async function finderNewFolder(
 			if (folder.isDirectory) {
 				const folderIndex = notes.findIndex((n) => n.path === folder.path)
 
-				notes[folderIndex] = {
-					...folder,
-				}
+				if (folderIndex !== -1) {
+					notes[folderIndex] = {
+						...folder,
+					}
 
-				setState({
-					...state,
-					notes,
-				})
+					setState({
+						...state,
+						notes,
+					})
+				}
 			}
 		})
 }
@@ -242,16 +246,20 @@ export function finderRename(
 	if (noteIndex !== -1) {
 		const note = notes[noteIndex]
 
-		notes[noteIndex] = {
+		const updatedNote: FileSystemFinder = {
 			...note,
 			name: payload.name,
 			path: `${directory}/${payload.name}`,
 		}
 
+		notes[noteIndex] = updatedNote
+
 		setState({
 			...state,
 			notes,
 		})
+
+		API.updateNote(updatedNote)
 	}
 }
 
