@@ -44,10 +44,9 @@ export class NotesController {
 		return result
 	}
 
-	public async updateNote(file: FileSystemFinder) {
-		const data = new Blob(file.data ? [file.data] : ['**default-note**'], {
-			type: 'text/plain',
-		})
+	public async updateNote(file: FileSystemFinder & { data: Uint8Array }) {
+		const arrayBuffer = new Uint8Array(Object.values(file.data))
+		const data = new Blob([arrayBuffer], { type: 'text/plain' })
 
 		if (file.id) {
 			const result = await this.filesystem.updateFileSystem({
@@ -57,7 +56,7 @@ export class NotesController {
 				path: file.path,
 				updated_at: new Date(),
 				size: data.size,
-				data: await data.bytes(),
+				data: arrayBuffer,
 			})
 
 			return result

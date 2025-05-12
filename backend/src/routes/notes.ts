@@ -43,11 +43,15 @@ export class NotesRoute {
 	}
 
 	private async update(req: Request, res: Response) {
-		const file: FileSystemFinder = req.body
+		const file: FileSystemFinder & { data: Uint8Array } = req.body
 
-		const result = await this.controller.updateNote(file)
+		try {
+			const result = await this.controller.updateNote(file)
 
-		res.json(result)
+			res.json(result)
+		} catch (err) {
+			res.json({})
+		}
 	}
 
 	public init() {

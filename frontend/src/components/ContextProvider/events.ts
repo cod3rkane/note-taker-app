@@ -21,6 +21,10 @@ export function emitJoinRoom(socket: Socket, state: ContextAPI) {
 
 export function emitUpdateNote(socket: Socket, state: ContextAPI) {
 	socket.emit(WebsocketEvents.UPDATE_NOTE, state.currentNote)
+
+	if (state.currentNote) {
+		API.updateNote(state.currentNote)
+	}
 }
 
 export function emitRequestNote(socket: Socket, state: ContextAPI) {
