@@ -76,5 +76,7 @@ We do, understand that you may have a life (some people do). If you don't have t
 - Once you have cloned the repo
 - At the root directory simply run `docker-compose up`
 - Open the app with Firefox or Chrome using http://localhost:3000/
+- For real-time open two browsers using http://localhost:3000/QVjFl_bCKGJgQVgXAAAG 
+  - OR http://localhost:3000/${ROOM_ID} this can be any word, hash, name...
 
 - Enjoy the Note Taker App.
