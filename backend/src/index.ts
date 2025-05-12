@@ -4,6 +4,7 @@ import type { Server as HttpServer } from 'node:http'
 import { createServer as createHttpServer } from 'node:http'
 
 import startSocketServer from './SocketServer'
+import Notes from './routes/notes'
 
 const app = express()
 
@@ -13,6 +14,8 @@ app.use(express.json())
 const httpServer: HttpServer = createHttpServer(app)
 
 startSocketServer(httpServer)
+
+app.get('/notes', Notes.get)
 
 httpServer.listen(3005, () => {
 	console.info(`Listening on 3005`)

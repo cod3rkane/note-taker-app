@@ -1,0 +1,20 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model filesystem {
+  id           Int      @id @default(autoincrement())
+  name         String
+  is_directory Boolean  @default(false)
+  path         String   @unique
+  updated_at   DateTime @default(now()) @db.Timestamptz(6)
+  size         Int?
+  data         Bytes?
+}
