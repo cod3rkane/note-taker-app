@@ -11,8 +11,21 @@ export class NotesController {
 
 	public async getAllNotes() {
 		const notes = await this.filesystem.listFileSystems()
+		const result = notes.map((n) => {
+			const data = {
+				id: n.id,
+				name: n.name,
+				isDirectory: Boolean(n.is_directory),
+				path: n.path,
+				updatedAt: new Date(n.updated_at),
+				size: n.size ?? undefined,
+				data: n.data,
+			}
 
-		return notes
+			return data
+		})
+
+		return result
 	}
 
 	public async createNote(file: FileSystemFinder) {
