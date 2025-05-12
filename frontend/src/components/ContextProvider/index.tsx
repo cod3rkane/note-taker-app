@@ -13,6 +13,7 @@ import type { ContextProviderProps } from './types'
 import { WebsocketEvents, WindowEvents } from './types'
 import type { FileSystemFinder } from '../Finder/types'
 import Events from './events'
+import API from '../../api'
 
 const currentNoteObservable = new Observable(WindowEvents.SET_CURRENT_NOTE)
 const finderObservable = new Observable(WindowEvents.FINDER_EVENTS)
@@ -24,7 +25,7 @@ const socket = io('ws://localhost:3005')
 export function ContextProvider(props: ContextProviderProps) {
 	const [state, setState] = useState<ContextAPI>({
 		...initialContext,
-		notes: initialNotes,
+		isLoading: true,
 	})
 	const params = useParams<{ roomID?: string }>()
 
@@ -61,6 +62,27 @@ export function ContextProvider(props: ContextProviderProps) {
 			Events.emitUpdateNote(socket, newState)
 		}
 	}
+
+	useEffect(() => {
+		API.getNotes()
+			.then((res) => res.json())
+			.then((data: Array<FileSystemFinder & { data: Uint8Array }>) => {
+				const notes = data.map((n: FileSystemFinder & { data: Uint8Array }) => {
+					const arrayBuffer = new Uint8Array(Object.values(n.data))
+					const blob = new Blob([arrayBuffer], { type: 'text/plain' })
+
+					return {
+						...n,
+						data: blob,
+					}
+				})
+
+				setState({
+					notes,
+					isLoading: false,
+				})
+			})
+	}, [])
 
 	useEffect(() => {
 		const onSetCurrentNoteEvent = (note: FileSystemFinder) => {

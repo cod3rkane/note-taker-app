@@ -19,7 +19,7 @@ export class NotesController {
 				path: n.path,
 				updatedAt: new Date(n.updated_at),
 				size: n.size ?? undefined,
-				data: n.data,
+				data: n.data as Uint8Array,
 			}
 
 			return data
@@ -28,10 +28,9 @@ export class NotesController {
 		return result
 	}
 
-	public async createNote(file: FileSystemFinder) {
-		const data = new Blob(file.data ? [file.data] : ['**default-note**'], {
-			type: 'text/plain',
-		})
+	public async createNote(file: FileSystemFinder & { data: Uint8Array }) {
+		const arrayBuffer = new Uint8Array(file.data)
+		const data = new Blob([arrayBuffer], { type: 'text/plain' })
 
 		const result = await this.filesystem.createFilesystem({
 			name: file.name,
@@ -39,7 +38,7 @@ export class NotesController {
 			path: file.path,
 			updated_at: new Date(),
 			size: data.size,
-			data: await data.bytes(),
+			data: arrayBuffer,
 		})
 
 		return result

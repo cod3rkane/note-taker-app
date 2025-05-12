@@ -27,7 +27,7 @@ export class NotesRoute {
 	}
 
 	private async create(req: Request, res: Response) {
-		const file: FileSystemFinder = req.body
+		const file: FileSystemFinder & { data: Uint8Array } = req.body
 
 		const result = await this.controller.createNote(file)
 
