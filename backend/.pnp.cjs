@@ -1592,7 +1592,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../../.yarn/berry/cache/@npmcli-fs-npm-4.0.0-1d9cc8a27b-10c0.zip/node_modules/@npmcli/fs/",\
         "packageDependencies": [\
           ["@npmcli/fs", "npm:4.0.0"],\
-          ["semver", "npm:7.7.1"]\
+          ["semver", "npm:7.7.2"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -2367,7 +2367,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["browserslist", "npm:4.24.5"],\
           ["caniuse-lite", "npm:1.0.30001717"],\
-          ["electron-to-chromium", "npm:1.5.151"],\
+          ["electron-to-chromium", "npm:1.5.152"],\
           ["node-releases", "npm:2.0.19"],\
           ["update-browserslist-db", "virtual:89b9b4ad098f9c6dad8687906710ea0712650cdd30baf8273ab4475b36499d3b510b4723d5399b156c1010a29f870b7c47f37ecf5a73768ae3325fd20ea04b53#npm:1.1.3"]\
         ],\
@@ -2851,10 +2851,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["electron-to-chromium", [\
-      ["npm:1.5.151", {\
-        "packageLocation": "../../../.yarn/berry/cache/electron-to-chromium-npm-1.5.151-ab54dea6ad-10c0.zip/node_modules/electron-to-chromium/",\
+      ["npm:1.5.152", {\
+        "packageLocation": "../../../.yarn/berry/cache/electron-to-chromium-npm-1.5.152-49c3bab16a-10c0.zip/node_modules/electron-to-chromium/",\
         "packageDependencies": [\
-          ["electron-to-chromium", "npm:1.5.151"]\
+          ["electron-to-chromium", "npm:1.5.152"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -3775,7 +3775,7 @@ const RAW_RUNTIME_STATE =
           ["@istanbuljs/schema", "npm:0.1.3"],\
           ["istanbul-lib-coverage", "npm:3.2.2"],\
           ["istanbul-lib-instrument", "npm:6.0.3"],\
-          ["semver", "npm:7.7.1"]\
+          ["semver", "npm:7.7.2"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -4290,7 +4290,7 @@ const RAW_RUNTIME_STATE =
           ["jest-util", "npm:29.7.0"],\
           ["natural-compare", "npm:1.4.0"],\
           ["pretty-format", "npm:29.7.0"],\
-          ["semver", "npm:7.7.1"]\
+          ["semver", "npm:7.7.2"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -4470,7 +4470,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../../.yarn/berry/cache/make-dir-npm-4.0.0-ec3cd921cc-10c0.zip/node_modules/make-dir/",\
         "packageDependencies": [\
           ["make-dir", "npm:4.0.0"],\
-          ["semver", "npm:7.7.1"]\
+          ["semver", "npm:7.7.2"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -4756,7 +4756,7 @@ const RAW_RUNTIME_STATE =
           ["node-gyp", "npm:11.2.0"],\
           ["nopt", "npm:8.1.0"],\
           ["proc-log", "npm:5.0.0"],\
-          ["semver", "npm:7.7.1"],\
+          ["semver", "npm:7.7.2"],\
           ["tar", "npm:7.4.3"],\
           ["tinyglobby", "npm:0.2.13"],\
           ["which", "npm:5.0.0"]\
@@ -4792,7 +4792,7 @@ const RAW_RUNTIME_STATE =
           ["minimatch", "npm:3.1.2"],\
           ["nodemon", "npm:3.1.10"],\
           ["pstree.remy", "npm:1.1.8"],\
-          ["semver", "npm:7.7.1"],\
+          ["semver", "npm:7.7.2"],\
           ["simple-update-notifier", "npm:2.0.0"],\
           ["supports-color", "npm:5.5.0"],\
           ["touch", "npm:3.1.1"],\
@@ -5333,10 +5333,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:7.7.1", {\
-        "packageLocation": "../../../.yarn/berry/cache/semver-npm-7.7.1-4572475307-10c0.zip/node_modules/semver/",\
+      ["npm:7.7.2", {\
+        "packageLocation": "../../../.yarn/berry/cache/semver-npm-7.7.2-dfc3bc5ec9-10c0.zip/node_modules/semver/",\
         "packageDependencies": [\
-          ["semver", "npm:7.7.1"]\
+          ["semver", "npm:7.7.2"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -5474,7 +5474,7 @@ const RAW_RUNTIME_STATE =
       ["npm:2.0.0", {\
         "packageLocation": "../../../.yarn/berry/cache/simple-update-notifier-npm-2.0.0-4d6e5dba61-10c0.zip/node_modules/simple-update-notifier/",\
         "packageDependencies": [\
-          ["semver", "npm:7.7.1"],\
+          ["semver", "npm:7.7.2"],\
           ["simple-update-notifier", "npm:2.0.0"]\
         ],\
         "linkType": "HARD"\
