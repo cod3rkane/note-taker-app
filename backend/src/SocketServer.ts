@@ -23,20 +23,21 @@ const startSocketServer = (httpServer: HttpServer | HttpsServer) => {
 			}
 		})
 
-		const test = debounce((note: FileSystemFinder) => {
-			console.log('UPDATE_NOTE', note)
+		socket.on(
+			'UPDATE_NOTE',
+			debounce((note: FileSystemFinder) => {
+				console.log('UPDATE_NOTE', note)
 
-			socket.data = {
-				...socket.data,
-				note,
-			}
+				socket.data = {
+					...socket.data,
+					note,
+				}
 
-			if (socket.data.roomID) {
-				io.to(socket.data.roomID).emit('SYNC_NOTE', note)
-			}
-		}, 1000)
-
-		socket.on('UPDATE_NOTE', test)
+				if (socket.data.roomID) {
+					io.to(socket.data.roomID).emit('SYNC_NOTE', note)
+				}
+			}, 1000),
+		)
 
 		socket.on('REQUEST_NOTE', (roomID: string) => {
 			console.log('REQUEST_NOTE')
