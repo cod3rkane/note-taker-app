@@ -63,7 +63,6 @@ export function ContextProvider(props: ContextProviderProps) {
 	useEffect(() => {
 		function finderHandlerEvents(payload: FinderEvent) {
 			console.info('**finderHandlerEvents**')
-			console.log({ payload })
 
 			const directory = getDirectory(payload.payload)
 			const notes = Array.from(state.notes)

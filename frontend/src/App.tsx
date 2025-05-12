@@ -17,8 +17,6 @@ export function App() {
 		context.updateCurrentNote?.(text)
 	}
 
-	console.log({ context })
-
 	return (
 		<main>
 			<div className="flex">
