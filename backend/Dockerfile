@@ -11,7 +11,7 @@ RUN yarn set version stable
 # Build node app
 COPY . .
 RUN yarn install
-RUN yarn dlx prisma migrate dev -n migration
-RUN yarn seed
+# RUN yarn dlx prisma migrate dev -n migration
+# RUN yarn seed
 
 CMD ["yarn", "dev"]
