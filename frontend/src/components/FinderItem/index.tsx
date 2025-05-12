@@ -5,6 +5,7 @@ import {
 	cloneElement,
 	type FocusEvent,
 	type MouseEvent as ReactMouseEvent,
+	type KeyboardEvent,
 } from 'react'
 import classNames from 'classnames'
 import type { FinderItemProps } from './types'
@@ -91,6 +92,28 @@ export function FinderItem(props: FinderItemProps) {
 
 		finderObservable.publish(eventData)
 	}
+	const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === 'Enter') {
+			setIsEditing(false)
+			let name = e.currentTarget.value
+
+			if (!props.note.isDirectory) {
+				if (!name.endsWith('.md')) {
+					name = `${name}.md`
+				}
+			}
+
+			const eventData: FinderEvent = {
+				event: FinderEvents.RENAME,
+				payload: {
+					...props.note,
+					name,
+				},
+			}
+
+			finderObservable.publish(eventData)
+		}
+	}
 
 	return (
 		<div
@@ -106,6 +129,7 @@ export function FinderItem(props: FinderItemProps) {
 			{isEditing && (
 				<input
 					type="text"
+					onKeyDown={onKeyDown}
 					onBlur={onNameChangeBlur}
 					defaultValue={props.note.name}
 					onClick={(e) => {
