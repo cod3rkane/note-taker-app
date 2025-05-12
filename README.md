@@ -73,3 +73,8 @@ We do, understand that you may have a life (some people do). If you don't have t
 
 
 # Please enter your instructions below
+- Once you have cloned the repo
+- At the root directory simply run `docker-compose up`
+- Open the app with Firefox or Chrome using http://localhost:3000/
+
+- Enjoy the Note Taker App.
