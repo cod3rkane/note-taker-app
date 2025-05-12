@@ -185,8 +185,12 @@ export function ContextProvider(props: ContextProviderProps) {
 			.then((res) => res.json())
 			.then((data: Array<FileSystemFinder & { data: Uint8Array }>) => {
 				const notes = data.map((n: FileSystemFinder & { data: Uint8Array }) => {
-					const arrayBuffer = new Uint8Array(Object.values(n.data))
-					const blob = new Blob([arrayBuffer], { type: 'text/plain' })
+					let blob = undefined
+
+					if (!n.isDirectory) {
+						const arrayBuffer = new Uint8Array(Object.values(n.data))
+						blob = new Blob([arrayBuffer], { type: 'text/plain' })
+					}
 
 					return {
 						...n,
