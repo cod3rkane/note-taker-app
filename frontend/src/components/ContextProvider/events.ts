@@ -135,7 +135,8 @@ export function finderNewFile(
 	})
 
 	API.createNote(newNote)
-		.then((res) => res.json())
+		.then(async (res) => await res.json())
+		.finally(console.info)
 		.then((note: FileSystemFinder & { data: Uint8Array }) => {
 			if (note.data) {
 				const arrayBuffer = new Uint8Array(Object.values(note.data))
