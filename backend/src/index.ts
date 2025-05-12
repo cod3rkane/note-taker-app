@@ -16,6 +16,7 @@ const httpServer: HttpServer = createHttpServer(app)
 startSocketServer(httpServer)
 
 app.get('/notes', Notes.get)
+app.post('/notes', Notes.create)
 
 httpServer.listen(3005, () => {
 	console.info(`Listening on 3005`)

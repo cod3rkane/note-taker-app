@@ -10,8 +10,10 @@ export async function listFilesystem() {
 	return notes
 }
 
-export async function createFilesystem(file: filesystem) {
-	const data = new Blob(['**default note**'])
+export async function createFilesystem(file: Omit<filesystem, 'id'>) {
+	const data = new Blob(file.data ? [file.data] : ['**default-note**'], {
+		type: 'text/plain',
+	})
 
 	const res = await prisma.filesystem.create({
 		data: {
