@@ -19,6 +19,18 @@ export class NotesController {
 
 		return result
 	}
+
+	public async updateNote(file: filesystem) {
+		const result = await this.filesystem.updateFileSystem(file)
+
+		return result
+	}
+
+	public async deleteNote(id: number) {
+		const result = await this.filesystem.deleteFileSystem(id)
+
+		return result
+	}
 }
 
 export default NotesController

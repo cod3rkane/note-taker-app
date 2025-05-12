@@ -35,6 +35,23 @@ export class FileSystem {
 
 		return res
 	}
+
+	public async updateFileSystem(file: filesystem) {
+		const result = await this.db.filesystem.update({
+			where: { id: file.id },
+			data: file,
+		})
+
+		return result
+	}
+
+	public async deleteFileSystem(id: number) {
+		const result = await this.db.filesystem.delete({
+			where: { id },
+		})
+
+		return result
+	}
 }
 
 export default FileSystem
