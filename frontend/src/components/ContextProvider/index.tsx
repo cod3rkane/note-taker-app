@@ -5,11 +5,12 @@ import { useParams } from 'react-router'
 
 import { NoteContext, initialContext } from '../../context/noteContext'
 import type { ContextAPI } from '../../context/types'
-import type { ContextProviderProps } from './types'
-import { WebsocketEvents, WindowEvents } from './types'
+import type { ContextProviderProps, FinderEvent } from './types'
+import { FinderEvents, WebsocketEvents, WindowEvents } from './types'
 import type { FileSystemFinder } from '../Finder/types'
 import Events from './events'
 import API from '../../api'
+import { getDirectory, newFolder, newNote } from '../../utils'
 
 const currentNoteObservable = new Observable(WindowEvents.SET_CURRENT_NOTE)
 const finderObservable = new Observable(WindowEvents.FINDER_EVENTS)
@@ -60,6 +61,126 @@ export function ContextProvider(props: ContextProviderProps) {
 	}
 
 	useEffect(() => {
+		function finderHandlerEvents(payload: FinderEvent) {
+			console.info('**finderHandlerEvents**')
+			console.log({ payload })
+
+			const directory = getDirectory(payload.payload)
+			const notes = Array.from(state.notes)
+			const fileSystem = payload.payload
+			const noteIndex = notes.findIndex((n) => n.path === fileSystem.path)
+
+			switch (payload.event) {
+				case FinderEvents.NEW_FOLDER: {
+					const note = newFolder(fileSystem, notes)
+
+					notes.push(note)
+
+					setState({
+						...state,
+						notes,
+					})
+
+					API.createFolder(note)
+						.then(async (res) => await res.json())
+						.then((folder: FileSystemFinder) => {
+							if (folder.isDirectory) {
+								const folderIndex = notes.findIndex(
+									(n) => n.path === folder.path,
+								)
+
+								if (folderIndex !== -1) {
+									notes[folderIndex] = {
+										...folder,
+									}
+
+									setState({
+										...state,
+										notes,
+									})
+								}
+							}
+						})
+					break
+				}
+				case FinderEvents.NEW_FILE: {
+					const note = newNote(fileSystem, notes)
+
+					notes.push(note)
+
+					setState({
+						...state,
+						notes,
+					})
+
+					API.createNote(note)
+						.then(async (res) => await res.json())
+						.finally(console.info)
+						.then((note: FileSystemFinder & { data: Uint8Array }) => {
+							if (note.data) {
+								const arrayBuffer = new Uint8Array(Object.values(note.data))
+								const blob = new Blob([arrayBuffer], { type: 'text/plain' })
+
+								const noteIndex = notes.findIndex((n) => n.path === note.path)
+
+								if (noteIndex !== -1) {
+									notes[noteIndex] = {
+										...note,
+										data: blob,
+									}
+
+									setState({
+										...state,
+										notes,
+									})
+								}
+							}
+						})
+					break
+				}
+				case FinderEvents.RENAME:
+					if (noteIndex !== -1) {
+						const updatedNote: FileSystemFinder = {
+							...notes[noteIndex],
+							name: fileSystem.name,
+							path: `${directory}/${fileSystem.name}`,
+						}
+
+						notes[noteIndex] = updatedNote
+
+						setState({
+							...state,
+							notes,
+						})
+
+						/// Update BE
+						API.updateNote(updatedNote)
+					}
+					break
+				case FinderEvents.DELETE:
+					setState({
+						...state,
+						notes: notes.filter((n) => {
+							return fileSystem.isDirectory
+								? !n.path.startsWith(directory)
+								: n.path !== fileSystem.path
+						}),
+					})
+
+					/// Update BE
+					API.removeNote(fileSystem.id)
+					break
+			}
+		}
+
+		finderObservable.subscribe(finderHandlerEvents)
+
+		return () => {
+			finderObservable.unsubscribe(finderHandlerEvents)
+		}
+	}, [state])
+
+	useEffect(() => {
 		API.getNotes()
 			.then((res) => res.json())
 			.then((data: Array<FileSystemFinder & { data: Uint8Array }>) => {
@@ -96,9 +217,6 @@ export function ContextProvider(props: ContextProviderProps) {
 		websocketObservable.subscribe(
 			Events.websocketObservableEventsHandler(socket, state),
 		)
-		finderObservable.subscribe(
-			Events.finderObservableEventsHandler(state, setState),
-		)
 
 		// Websocket Events
 		socket.on(
@@ -113,12 +231,6 @@ export function ContextProvider(props: ContextProviderProps) {
 		return () => {
 			/// Window Events
 			currentNoteObservable.unsubscribe(onSetCurrentNoteEvent)
-			// finderObservable.unsubscribe(
-			// 	Events.finderObservableEventsHandler(state, setState),
-			// )
-			websocketObservable.unsubscribe(
-				Events.websocketObservableEventsHandler(socket, state),
-			)
 
 			// Websocket Events
 			// @TODO: disconnect socket lateron
