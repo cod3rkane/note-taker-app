@@ -40,9 +40,11 @@ export function FinderItem(props: FinderItemProps) {
 		}
 
 		document.addEventListener('contextmenu', handleContextMenu)
+		document.addEventListener('click', handleContextMenu)
 
 		return () => {
 			document.removeEventListener('contextmenu', handleContextMenu)
+			document.addEventListener('click', handleContextMenu)
 		}
 	}, [])
 
