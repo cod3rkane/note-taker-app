@@ -7,9 +7,7 @@
 		"dev": "nodemon",
 		"test": "jest \"tests/.*\\.test\\.ts\"",
 		"check": "biome check --write",
-		"format": "biome format --write"
-	},
-	"prisma": {
+		"format": "biome format --write",
 		"seed": "tsx prisma/seed.ts"
 	},
 	"repository": {
