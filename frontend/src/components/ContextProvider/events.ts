@@ -117,7 +117,7 @@ export function finderNewFile(
 	const data = new Blob([`**${name}**`], { type: 'text/plain' })
 	const notes = Array.from(state.notes)
 
-	notes.push({
+	const newNote: FileSystemFinder = {
 		id: payload.id,
 		name,
 		isDirectory: false, // File
@@ -125,15 +125,38 @@ export function finderNewFile(
 		updatedAt: new Date(),
 		size: data.size,
 		data,
-	})
+	}
+
+	notes.push(newNote)
 
 	setState({
 		...state,
 		notes,
 	})
+
+	API.createNote(newNote)
+		.then((res) => res.json())
+		.then((note: FileSystemFinder & { data: Uint8Array }) => {
+			if (note.data) {
+				const arrayBuffer = new Uint8Array(Object.values(note.data))
+				const blob = new Blob([arrayBuffer], { type: 'text/plain' })
+
+				const noteIndex = notes.findIndex((n) => n.path === note.path)
+
+				notes[noteIndex] = {
+					...note,
+					data: blob,
+				}
+
+				setState({
+					...state,
+					notes,
+				})
+			}
+		})
 }
 
-export function finderNewFolder(
+export async function finderNewFolder(
 	state: ContextAPI,
 	setState: Dispatch<SetStateAction<ContextAPI>>,
 	payload: FileSystemFinder,
@@ -151,18 +174,37 @@ export function finderNewFolder(
 	const path = `${directory}/${name}`
 	const notes = Array.from(state.notes)
 
-	notes.push({
+	const newFolder: FileSystemFinder = {
 		id: payload.id,
 		name,
 		isDirectory: true,
 		path,
 		updatedAt: new Date(),
-	})
+	}
+
+	notes.push(newFolder)
 
 	setState({
 		...state,
 		notes,
 	})
+
+	API.createFolder(newFolder)
+		.then(async (res) => await res.json())
+		.then((folder: FileSystemFinder) => {
+			if (folder.isDirectory) {
+				const folderIndex = notes.findIndex((n) => n.path === folder.path)
+
+				notes[folderIndex] = {
+					...folder,
+				}
+
+				setState({
+					...state,
+					notes,
+				})
+			}
+		})
 }
 
 export function finderDelete(
@@ -228,7 +270,7 @@ export function finderObservableEventsHandler(
 			case FinderEvents.DELETE:
 				return finderDelete(state, setState, payload)
 		}
-	}, 100)
+	}, 500)
 }
 
 export default {

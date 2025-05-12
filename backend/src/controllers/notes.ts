@@ -41,6 +41,18 @@ export class NotesController {
 			data: arrayBuffer,
 		})
 
+		if (result.id) {
+			return {
+				id: result.id,
+				name: result.name,
+				isDirectory: Boolean(result.is_directory),
+				path: result.path,
+				updatedAt: new Date(result.updated_at),
+				size: result.size ?? undefined,
+				data: result.data as Uint8Array,
+			}
+		}
+
 		return result
 	}
 

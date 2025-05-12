@@ -43,8 +43,42 @@ export async function updateNote(note: FileSystemFinder) {
 	})
 }
 
+/** Creates a Note */
+export async function createNote(note: FileSystemFinder) {
+	const data = await note.data?.bytes()
+	// @TODO: URL comes from .env later on
+	return fetch('http://localhost:3005/notes', {
+		method: 'POST',
+		body: JSON.stringify({
+			...note,
+			data: Array.from(data as Uint8Array),
+		}),
+		headers: {
+			'Content-Type': 'application/json',
+			// @TODO: Authentication?
+		},
+	})
+}
+
+/** Creates a Note */
+export async function createFolder(note: FileSystemFinder) {
+	// @TODO: URL comes from .env later on
+	return fetch('http://localhost:3005/notes', {
+		method: 'POST',
+		body: JSON.stringify({
+			...note,
+		}),
+		headers: {
+			'Content-Type': 'application/json',
+			// @TODO: Authentication?
+		},
+	})
+}
+
 export default {
 	getNotes,
 	removeNote,
 	updateNote,
+	createNote,
+	createFolder,
 }
