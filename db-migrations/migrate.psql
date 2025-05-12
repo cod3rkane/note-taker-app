@@ -1,1 +1,28 @@
 -- DB migration logic goes here if any
+
+CREATE TABLE FileSystem (
+  id SERIAL PRIMARY KEY,
+
+  name TEXT NOT NULL,
+  is_directory BOOLEAN NOT NULL DEFAULT FALSE,
+  path TEXT NOT NULL,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  size INTEGER CHECK (size >= 0),
+
+  -- Store blob data as BYTEA (binary data)
+  data BYTEA,
+
+  -- Optional: enforce uniqueness if needed
+  UNIQUE (path)
+);
+
+INSERT INTO FileSystem (
+  name, is_directory, path, updated_at, size, data
+) VALUES (
+  'first-note.md',
+  FALSE,
+  '/Notes/first-note.md',
+  '2025-09-09T10:30:00Z',
+  0,
+  E'**second-note**'::bytea
+);

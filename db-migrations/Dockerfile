@@ -1,6 +1,9 @@
-FROM   bitnami/postgresql:latest
+FROM bitnami/postgresql:latest
 EXPOSE 5432
+
 ENV    POSTGRESQL_PASSWORD=password123 \
        POSTGRESQL_DATABASE=editor \
-       DB_URL=postgres://postgres:password123@localhost:5432/editor?sslmode=disable
+       DB_URL=postgresql://postgres:password123@postgresql:5432/editor?schema=public \
+       PSQL_DB_URL=postgresql://postgres:password123@postgresql:5432/editor
+
 COPY   . ./docker-entrypoint-initdb.d
