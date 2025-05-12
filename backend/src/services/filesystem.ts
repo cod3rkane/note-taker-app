@@ -1,32 +1,40 @@
 import { PrismaClient, type filesystem } from '../../generated/prisma'
 
-const prisma = new PrismaClient()
+export class FileSystem {
+	private db: PrismaClient
 
-export async function listFilesystem() {
-	const notes = await prisma.filesystem.findMany()
+	constructor() {
+		this.db = new PrismaClient()
+	}
 
-	prisma.$disconnect()
+	public async listFileSystems() {
+		const notes = await this.db.filesystem.findMany()
 
-	return notes
+		this.db.$disconnect()
+
+		return notes
+	}
+
+	public async createFilesystem(file: Omit<filesystem, 'id'>) {
+		const data = new Blob(file.data ? [file.data] : ['**default-note**'], {
+			type: 'text/plain',
+		})
+
+		const res = await this.db.filesystem.create({
+			data: {
+				name: file.name,
+				is_directory: file.is_directory,
+				path: file.path,
+				updated_at: new Date(),
+				size: data.size,
+				data: await data.bytes(),
+			},
+		})
+
+		this.db.$disconnect()
+
+		return res
+	}
 }
 
-export async function createFilesystem(file: Omit<filesystem, 'id'>) {
-	const data = new Blob(file.data ? [file.data] : ['**default-note**'], {
-		type: 'text/plain',
-	})
-
-	const res = await prisma.filesystem.create({
-		data: {
-			name: file.name,
-			is_directory: file.is_directory,
-			path: file.path,
-			updated_at: new Date(),
-			size: data.size,
-			data: await data.bytes(),
-		},
-	})
-
-	prisma.$disconnect()
-
-	return res
-}
+export default FileSystem

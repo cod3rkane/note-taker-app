@@ -1,38 +1,34 @@
-import type { Request, Response } from 'express'
+import type { Express, Request, Response } from 'express'
 
-import type { filesystem } from '../../generated/prisma'
-import { listFilesystem, createFilesystem } from '../services/filesystem'
+import { NotesController } from '../controllers/notes'
 
-export async function get(req: Request, res: Response) {
-	const notes = await listFilesystem()
+export class NotesRoute {
+	private app: Express
+	private controller: NotesController
 
-	res.json(notes)
+	constructor(app: Express) {
+		this.app = app
+		this.controller = new NotesController()
+	}
+
+	private async get(req: Request, res: Response) {
+		const notes = await this.controller.getAllNotes()
+
+		res.json(notes)
+	}
+
+	private async remove(req: Request, res: Response) {}
+
+	private async create(req: Request, res: Response) {}
+
+	private async update(req: Request, res: Response) {}
+
+	public init() {
+		this.app.get('/notes', this.get.bind(this))
+		this.app.post('/notes', this.create.bind(this))
+		this.app.delete('/notes', this.remove.bind(this))
+		this.app.put('/notes', this.update.bind(this))
+	}
 }
 
-export function remove(req: Request, res: Response) {}
-
-export async function create(req: Request, res: Response) {
-	console.log({ req })
-	// const data = new Blob(file.data ? [file.data] : ['**default-note**'], {
-	// 	type: 'text/plain',
-	// })
-	// const file: Omit<filesystem, 'id'> = {
-	// 	name: file.name,
-	// 	is_directory: file.is_directory,
-	// 	path: file.path,
-	// 	updated_at: new Date(),
-	// 	size: data.size,
-	// 	data: await data.bytes(),
-	// }
-
-	res.json({ success: true })
-}
-
-export function update(req: Request, res: Response) {}
-
-export default {
-	get,
-	remove,
-	create,
-	update,
-}
+export default NotesRoute
