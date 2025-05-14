@@ -46,8 +46,7 @@ const startSocketServer = (httpServer: HttpServer | HttpsServer) => {
 		})
 
 		socket.on('SAVE_NOTE', (note: FileSystemFinder) => {
-			console.log('SAVE_NOTE', { note })
-			// @TODO: save note to Database
+			console.log('SAVE_NOTE')
 		})
 	}
 
